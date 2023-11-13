@@ -1,68 +1,68 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Task {
-    private String name;
-    private String description;
-    private boolean isCompleted;
+class Zadanie {
+    private String nazwa;
+    private String opis;
+    private boolean czyZakonczone;
 
-    public Task(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.isCompleted = false;
+    public Zadanie(String nazwa, String opis) {
+        this.nazwa = nazwa;
+        this.opis = opis;
+        this.czyZakonczone = false;
     }
 
-    public String getName() {
-        return name;
+    public String getNazwa() {
+        return nazwa;
     }
 
-    public String getDescription() {
-        return description;
+    public String getOpis() {
+        return opis;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public boolean czyZakonczone() {
+        return czyZakonczone;
     }
 
-    public void markAsCompleted() {
-        isCompleted = true;
+    public void oznaczJakoZakonczone() {
+        czyZakonczone = true;
     }
 }
 
-public class ToDoList {
-    private ArrayList<Task> tasks;
+public class ListaZadan {
+    private ArrayList<Zadanie> zadania;
     private Scanner scanner;
 
-    public ToDoList() {
-        this.tasks = new ArrayList<>();
+    public ListaZadan() {
+        this.zadania = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }
 
     public static void main(String[] args) {
-        ToDoList toDoList = new ToDoList();
-        toDoList.run();
+        ListaZadan listaZadan = new ListaZadan();
+        listaZadan.uruchom();
     }
 
-    private void run() {
-        int choice;
+    private void uruchom() {
+        int wybor;
         do {
-            displayMenu();
+            wyswietlMenu();
             System.out.print("Wybierz opcję (1/2/3/4/5): ");
-            choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline character
+            wybor = scanner.nextInt();
+            scanner.nextLine();
 
-            switch (choice) {
+            switch (wybor) {
                 case 1:
-                    addTask();
+                    dodajZadanie();
                     break;
                 case 2:
-                    markTaskAsCompleted();
+                    oznaczZadanieJakoZakonczone();
                     break;
                 case 3:
-                    removeTask();
+                    usunZadanie();
                     break;
                 case 4:
-                    displayTasks();
+                    wyswietlZadania();
                     break;
                 case 5:
                     System.out.println("Koniec programu.");
@@ -70,10 +70,10 @@ public class ToDoList {
                 default:
                     System.out.println("Nieprawidłowy wybór. Spróbuj ponownie.");
             }
-        } while (choice != 5);
+        } while (wybor != 5);
     }
 
-    private void displayMenu() {
+    private void wyswietlMenu() {
         System.out.println("1. Dodaj nowe zadanie");
         System.out.println("2. Oznacz zadanie jako zakończone");
         System.out.println("3. Usuń zadanie");
@@ -81,59 +81,59 @@ public class ToDoList {
         System.out.println("5. Wyjście");
     }
 
-    private void addTask() {
+    private void dodajZadanie() {
         System.out.print("Podaj nazwę zadania: ");
-        String name = scanner.nextLine();
+        String nazwa = scanner.nextLine();
         System.out.print("Podaj opis zadania: ");
-        String description = scanner.nextLine();
+        String opis = scanner.nextLine();
 
-        Task task = new Task(name, description);
-        tasks.add(task);
+        Zadanie zadanie = new Zadanie(nazwa, opis);
+        zadania.add(zadanie);
 
-        System.out.println("Zadanie \"" + name + "\" zostało dodane do listy.");
+        System.out.println("Zadanie \"" + nazwa + "\" zostało dodane do listy.");
     }
 
-    private void markTaskAsCompleted() {
+    private void oznaczZadanieJakoZakonczone() {
         System.out.print("Podaj numer zadania do oznaczenia jako zakończone: ");
-        int taskNumber = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int numerZadania = scanner.nextInt();
+        scanner.nextLine(); // Skonsumuj znak nowej linii
 
-        if (isValidTaskNumber(taskNumber)) {
-            Task task = tasks.get(taskNumber - 1);
-            task.markAsCompleted();
-            System.out.println("Zadanie \"" + task.getName() + "\" zostało oznaczone jako zakończone.");
+        if (jestPoprawnymNumeremZadania(numerZadania)) {
+            Zadanie zadanie = zadania.get(numerZadania - 1);
+            zadanie.oznaczJakoZakonczone();
+            System.out.println("Zadanie \"" + zadanie.getNazwa() + "\" zostało oznaczone jako zakończone.");
         } else {
             System.out.println("Nieprawidłowy numer zadania.");
         }
     }
 
-    private void removeTask() {
+    private void usunZadanie() {
         System.out.print("Podaj numer zadania do usunięcia: ");
-        int taskNumber = scanner.nextInt();
-        scanner.nextLine(); // Consume newline character
+        int numerZadania = scanner.nextInt();
+        scanner.nextLine();
 
-        if (isValidTaskNumber(taskNumber)) {
-            Task task = tasks.remove(taskNumber - 1);
-            System.out.println("Zadanie \"" + task.getName() + "\" zostało usunięte z listy.");
+        if (jestPoprawnymNumeremZadania(numerZadania)) {
+            Zadanie zadanie = zadania.remove(numerZadania - 1);
+            System.out.println("Zadanie \"" + zadanie.getNazwa() + "\" zostało usunięte z listy.");
         } else {
             System.out.println("Nieprawidłowy numer zadania.");
         }
     }
 
-    private void displayTasks() {
+    private void wyswietlZadania() {
         System.out.println("Lista zadań:");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            String status = task.isCompleted() ? "[x]" : "[ ]";
-            System.out.println((i + 1) + ". " + status + " " + task.getName() + ": " + task.getDescription());
+        for (int i = 0; i < zadania.size(); i++) {
+            Zadanie zadanie = zadania.get(i);
+            String status = zadanie.czyZakonczone() ? "[x]" : "[ ]";
+            System.out.println((i + 1) + ". " + status + " " + zadanie.getNazwa() + ": " + zadanie.getOpis());
         }
 
-        if (tasks.isEmpty()) {
+        if (zadania.isEmpty()) {
             System.out.println("(brak zadań)");
         }
     }
 
-    private boolean isValidTaskNumber(int taskNumber) {
-        return taskNumber >= 1 && taskNumber <= tasks.size();
+    private boolean jestPoprawnymNumeremZadania(int numerZadania) {
+        return numerZadania >= 1 && numerZadania <= zadania.size();
     }
 }
